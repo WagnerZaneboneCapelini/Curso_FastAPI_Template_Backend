@@ -1,0 +1,1 @@
+::: src.curso_fastapi_template_backend.core.config.settings

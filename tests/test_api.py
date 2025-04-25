@@ -3,7 +3,7 @@
 import httpx
 from fastapi.testclient import TestClient
 
-from snap_backend_template.api import app
+from curso_fastapi_template_backend.api import app
 
 client = TestClient(app)
 

@@ -7,16 +7,16 @@
 #     Abner G Jacobsen
 #     https://github.com/abnerjacobsen
 # """
-find . -type f -exec sed -i 's/snap-backend-template/change-me/g' {} +
-find . -type f -exec sed -i 's/snap_backend_template/change_me/g' {} +
+find . -type f -exec sed -i 's/Curso_FastAPI_Template_Backend/change-me/g' {} +
+find . -type f -exec sed -i 's/curso_fastapi_template_backend/change_me/g' {} +
 
-find . -type d -name 'snap_backend_template' | while read FILE ; do
-    newfile="$(echo ${FILE} |sed -e 's/snap_backend_template/change_me/')" ;
+find . -type d -name 'curso_fastapi_template_backend' | while read FILE ; do
+    newfile="$(echo ${FILE} |sed -e 's/curso_fastapi_template_backend/change_me/')" ;
     mv "${FILE}" "${newfile}" ;
 done
 
-find . -type d -name 'snap-backend-template' | while read FILE ; do
-    newfile="$(echo ${FILE} |sed -e 's/snap-backend-template/change-me/')" ;
+find . -type d -name 'Curso_FastAPI_Template_Backend' | while read FILE ; do
+    newfile="$(echo ${FILE} |sed -e 's/Curso_FastAPI_Template_Backend/change-me/')" ;
     mv "${FILE}" "${newfile}" ;
 done
 

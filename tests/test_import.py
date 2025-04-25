@@ -1,8 +1,8 @@
 """Test Snap App."""
 
-import snap_backend_template
+import curso_fastapi_template_backend
 
 
 def test_import() -> None:
     """Test that the app can be imported."""
-    assert isinstance(snap_backend_template.__name__, str)
+    assert isinstance(curso_fastapi_template_backend.__name__, str)
