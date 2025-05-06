@@ -21,7 +21,7 @@ def read_root():
 def create_user(user: UserSchema, session: Session = Depends(get_session)):
     db_user = session.scalar(
         select(User).where(
-            (User.username == user.username)
+            (User.username == user.username) | (User.email == user.email)
         )
     )
 
@@ -93,10 +93,12 @@ def delete_user(user_id: int, session: Session = Depends(get_session)):
 
 
 @app.get('/users/{user_id}', response_model=UserPublic)
-def verifica_user_especifico(user_id: int):
-    if user_id > len(database) or user_id < 1:
+def verifica_user_especifico(user_id: int, session: Session = Depends(get_session)):
+    db_user = session.scalar(select(User).where(User.id == user_id))
+
+    if not db_user:
         raise HTTPException(
             status_code=HTTPStatus.NOT_FOUND, detail='User not found'
         )
 
-    return database[user_id - 1]
+    return db_user

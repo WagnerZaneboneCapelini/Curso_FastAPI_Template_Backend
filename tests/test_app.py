@@ -82,7 +82,28 @@ def test_delete_user(client, user):
     assert response.json() == {'message': 'User deleted'}
 
 
-'''
+def test_create_user_que_ja_existe(client, user):
+    response = client.post('/users/', json={
+        'username': user.username,
+        'email': 'diferente@exemplo.com',
+        'password': 'secreto',
+    })
+
+    assert response.status_code == HTTPStatus.CONFLICT
+    assert response.json() == {'detail': 'Username already exists'}
+
+
+def test_create_user_com_email_que_ja_existe(client, user):
+    response = client.post('/users/', json={
+        'username': 'joao',
+        'email': user.email,
+        'password': 'secreto',
+    })
+
+    assert response.status_code == HTTPStatus.CONFLICT
+    assert response.json() == {'detail': 'Email already exists'}
+
+
 def test_update_not_found_user_exercicio(client):
     response = client.put('/users/999', json={
         'username': 'ronaldo',
@@ -105,19 +126,13 @@ def test_delete_user_not_found_exercicio(client):
     }
 
 
-def test_get_user_especifico_exercicio(client):
-    # Criando o usuário antes de deletá-lo
-    client.post('/users/', json={
-        'username': 'bob',
-        'email': 'bob@exemplo.com',
-        'password': 'secreto'})
-
+def test_get_user_especifico_exercicio(client, user):
     response = client.get('/users/1')
     assert response.status_code == HTTPStatus.OK
     assert response.json() == {
-        'id': 1,
-        'username': 'bob',
-        'email': 'bob@exemplo.com',
+        'id': user.id,
+        'username': user.username,
+        'email': user.email,
     }
 
 
@@ -127,5 +142,3 @@ def test_get_user_especifico_not_found_exercicio(client):
     assert response.json() == {
         'detail': 'User not found'
     }
-
-    '''
