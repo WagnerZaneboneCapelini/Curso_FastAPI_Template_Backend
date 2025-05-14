@@ -7,6 +7,7 @@ from sqlalchemy.pool import StaticPool
 from curso_fastapi_template_backend.app import app
 from curso_fastapi_template_backend.models import table_registry, User
 from curso_fastapi_template_backend.database import get_session
+from curso_fastapi_template_backend.security import get_password_hash
 
 from contextlib import contextmanager
 from datetime import datetime
@@ -62,13 +63,24 @@ def mock_db_time():
 
 @pytest.fixture
 def user(session):
+    password = 'testtest'
     user = User(
         username='Teste',
         email='teste@test.com',
-        password='testtest'
+        password=get_password_hash('testtest'),
     )
     session.add(user)
     session.commit()
     session.refresh(user)
 
+    user.clean_password = password
+
     return user
+
+
+@pytest.fixture
+def token(client, user):
+    response = client.post(
+        '/token', data={'username': user.email, 'password': user.clean_password},
+    )
+    return response.json()['access_token']
