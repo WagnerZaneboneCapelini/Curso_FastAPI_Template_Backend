@@ -115,29 +115,6 @@ def test_create_user_com_email_que_ja_existe(client, user):
     assert response.json() == {'detail': 'Email already exists'}
 
 
-'''
-def test_update_not_found_user_exercicio(client):
-    response = client.put('/users/999', json={
-        'username': 'ronaldo',
-        'email': 'ronaldo@exemplo.com',
-        'password': 'senha_ronaldo',
-    })
-
-    assert response.status_code == HTTPStatus.NOT_FOUND
-    assert response.json() == {
-        'detail': 'User not found'
-    }
-
-
-def test_delete_user_not_found_exercicio(client):
-    response = client.delete('/users/666')
-
-    assert response.status_code == HTTPStatus.NOT_FOUND
-    assert response.json() == {
-        'detail': 'User not found'
-    }
-
-
 def test_get_user_especifico_exercicio(client, user):
     response = client.get('/users/1')
     assert response.status_code == HTTPStatus.OK
@@ -154,7 +131,6 @@ def test_get_user_especifico_not_found_exercicio(client):
     assert response.json() == {
         'detail': 'User not found'
     }
-'''
 
 
 def test_get_token(client, user):
