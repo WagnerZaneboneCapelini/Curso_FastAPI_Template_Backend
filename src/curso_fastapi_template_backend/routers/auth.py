@@ -10,12 +10,13 @@ from sqlalchemy.orm import Session
 from curso_fastapi_template_backend.database import get_session
 from curso_fastapi_template_backend.models import User
 from curso_fastapi_template_backend.schemas import Token
-from curso_fastapi_template_backend.security import create_access_token, verify_password
+from curso_fastapi_template_backend.security import create_access_token, verify_password, get_current_user
 
 router = APIRouter(prefix='/auth', tags=['auth'])
 
 OAuth2Form = Annotated[OAuth2PasswordRequestForm, Depends()]
 Session = Annotated[AsyncSession, Depends(get_session)]
+CurrentUser = Annotated[User, Depends(get_current_user)]
 
 
 @router.post('/token', response_model=Token)
@@ -40,3 +41,10 @@ async def login_for_access_token(
     access_token = create_access_token(data={'sub': user.email})
 
     return {'access_token': access_token, 'token_type': 'bearer'}
+
+
+@router.post('/refresh_token', response_model=Token)
+async def refresh_access_token(user: CurrentUser):
+    new_access_token = create_access_token(data={'sub': user.email})
+
+    return {'access_token': new_access_token, 'token_type': 'bearer'}
